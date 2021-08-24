@@ -11,3 +11,5 @@ Utilizando a IDE (Visual Studio Code):
                 
       2- Executar o arquivo "BlackJack.py" da mesma forma ou através dos seguintes passos: 
                 Run >>>> Start Without Debbuging (Ctrl+F5)
+                
+                *** Para cada usuário que for jogar é necessário a utilização de terminais diferentes ***
