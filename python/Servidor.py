@@ -83,11 +83,8 @@ def eat(player,cheap):
             clientsocket.send(str.encode('utf-8'))
             break
         else:    
-            print(resposta,"BATATAAAAAAAAAAAA")
             if(resposta == "s"):
-                print("CARDSSSS", player[9])
                 cards = player[9]
-                print("CARDSSSS CHEAPPP", cheap[0])
                 cards.append(cheap[0])
                 player[9] = cards
                 del(cheap[0:1])
@@ -245,12 +242,10 @@ def NewClient(clientsocket,addr):
                 print("Aguardando Cliente !!")
                 time.sleep(5)
 
-            print(data.decode())
             texto_recebido = data.decode('utf-8') # converte os bytes em string
             #TransforInPlayer(texto_recebido)
             print('recebido do cliente {} na porta {}: {}'.format(addr[0], addr[1],texto_recebido))
             
-            print(texto_recebido,"FEIJAAAAAAOOOOOOOOOOOo")
             resposta = texto_recebido
             if texto_recebido == "s" or texto_recebido == "S" or texto_recebido == "sim" or texto_recebido == "SIM" or texto_recebido == "Sim":
                 resposta = "s"
