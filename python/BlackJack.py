@@ -41,7 +41,7 @@ def Bet(player):
     while (value < 1 or value > amountPlayer):
         print("Não é permitido apostar esse valor")
         value = int(input("Qual valor deseja apostar? \n----> R$"))
-    print("---------------------------------")
+        print("---------------------------------")
     player[0][3] -= value
     player[0][7] = value
     
@@ -72,11 +72,9 @@ def main(argv):
                     eating = input("\n----> Comer nova carta? [s/n] \n----> ")
                     s.send(eating.encode('utf-8'))
                 
-                elif len(texto_string) > 100:
-                    player = texto_string.split(".")
-                    eat(player)
-                    resp = "-".join(str(v) for v in Player)
-                    s.send(resp.encode('utf-8'))
+                elif texto_string == "3":
+                    resposta = str(Bet(Player))
+                    s.send(resposta.encode('utf-8'))
                 else:
                     print(texto_string)
 

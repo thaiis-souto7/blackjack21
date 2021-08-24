@@ -29,7 +29,6 @@ def Bet(player):
     clientsocket.send(str.encode('utf-8'))
     time.sleep(10)
     
-    print(resposta)
     player[7] = int(resposta)
     player[3] -= player[7]
     global valueRound
@@ -59,25 +58,25 @@ def GiveCards(cheap):
 def eat(player,cheap):
     while(True):
         #Envia a lista do player com as cartas atuais
-        
-        #str = 'Suas Cartas são {} - {}'.format(player[9], CountCards(player[9]))
+        str = 'Cartas: {} \nValor Atual: {}'.format(player[9], CountCards(player[9]))
         str2 = "2"
         clientsocket = ""
         for i in range(len(Ordem)):
             if player[1] == Ordem[i][0]:
-                clientsocket = Ordem[i][1] 
+                clientsocket = Ordem[i][1]
         clientsocket.send(str.encode('utf-8'))
         clientsocket.send(str2.encode('utf-8'))
         time.sleep(15)
 
-        print(resposta)
         if player[6] == 21:
-            print("\nVocê já tem 21!")
-            print("---------------------------------\n")
+            str = '\nVocê já tem 21!\n---------------------------------\n'
+            print(str)
+            clientsocket.send(str.encode('utf-8'))
             break
         elif player[6] > 21:
-            print("\nVocê estourou!")
-            print("---------------------------------\n")
+            str = '\nVocê estourou!\n---------------------------------\n'
+            print(str)
+            clientsocket.send(str.encode('utf-8'))
             break
         else:    
             print(resposta,"BATATAAAAAAAAAAAA")
@@ -234,6 +233,7 @@ def Round(numRound,cheap):
 
 
 def NewClient(clientsocket,addr):
+    print(texto_recebido)
     while True:
         try:
             global resposta
@@ -243,6 +243,7 @@ def NewClient(clientsocket,addr):
                 print("Aguardando Cliente !!")
                 time.sleep(5)
 
+            print(data.decode())
             texto_recebido = data.decode('utf-8') # converte os bytes em string
             #TransforInPlayer(texto_recebido)
             print('recebido do cliente {} na porta {}: {}'.format(addr[0], addr[1],texto_recebido))
@@ -312,7 +313,6 @@ def main(argv):
                 numGame = 0
                 numRound = 0
                 i += 1
-#TENHO QUE VOLTAR ISSO AKI PARA 2 PARA SO COMEÇAR QUANDO TIVER MAIS Q DOIS JOGADORES
            
         while(True):       
             play = int(input("\n----> OPÇÕES DE JOGO: \n1 - Jogar\n2 - Sair\n----> "))
