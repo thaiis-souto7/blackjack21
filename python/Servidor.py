@@ -58,24 +58,29 @@ def GiveCards(cheap):
 def eat(player,cheap):
     while(True):
         #Envia a lista do player com as cartas atuais
-        clientsocket = player[9]
-        lista = ".".join(str(v) for v in player)
-        clientsocket.send(lista.encode())
+        
+        str = 'Suas Cartas são {} - {}'.format(player[9], CountCards(player[9]))
+        str2 = "2"
+        for i in range(len(Ordem)):
+            if player[1] == Ordem[i][0]:
+                clientsocket = Ordem[i][1] 
+        clientsocket.send(str.encode())
+        clientsocket.send(str2.encode())
         time.sleep(15)
 
         if player[6] == 21:
             print("Você já tem 21 !!")
             break
         else:    
-            if(ListPlayers[player[0]-1][8] == "s" or ListPlayers[player[0]-1][8] == "S" or ListPlayers[player[0]-1][8] == "Sim" or ListPlayers[player[0]-1][8] == "SIM" or ListPlayers[player[0]-1][8] == "sim"):
+            if(resposta == "s"):
+                print("CARDSSSS", player[9])
                 cards = player[9]
+                print("CARDSSSS CHEAPPP", cheap[0])
                 cards.append(cheap[0])
                 player[9] = cards
                 del(cheap[0:1])
                 print("Suas Cartas   |", player[9], "TOTAL   |", CountCards(player[9]))
                 player[6] = CountCards(player[9])
-            elif ListPlayers[player[0]-1][8] == "":
-                print("")
             else:
                 break
     return player
@@ -212,7 +217,7 @@ def Round(numRound,cheap):
 
         print("\nSuas Cartas   |", ListPlayers[i][9], "TOTAL   |", ListPlayers[i][6])
         ShowAmount(ListPlayers[i])
-        ListPlayers[i] = eat(ListPlayers[i], cheap) 
+        eat(ListPlayers[i], cheap) 
     
     print("O Vencedor foi   |", win())
     print(ListPlayers)

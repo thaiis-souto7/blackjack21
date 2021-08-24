@@ -64,13 +64,9 @@ def treatment(player):
     Player.append(player)
 
 
-def eat(player):
-    
-    treatment(player)
-
-    print("Suas Cartas   |", Player[0][9], "TOTAL   |", Player[0][6])
+def eat():
     eating = input("----> Deseja comer uma nova carta ? [s/n] \n----> ")
-    Player[0][8] = eating
+    return eating
 
 
 def main(argv): 
@@ -92,12 +88,17 @@ def main(argv):
                 if texto_string == "1":
                     resposta = str(Bet(Player))
                     s.send(resposta.encode('utf-8'))
-
+                
+                elif texto_string == "2":
+                    resposta = eat()
+                
                 elif len(texto_string) > 100:
                     player = texto_string.split(".")
                     eat(player)
                     resp = "-".join(str(v) for v in Player)
                     s.send(resp.encode('utf-8'))
+                else:
+                    print(texto_string)
 
                     
     except Exception as error:
