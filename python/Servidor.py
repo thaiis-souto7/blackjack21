@@ -21,12 +21,14 @@ resposta = ""
 #Pergunta quanto que o jogador quer apostar e faz a aposta
 def Bet(player):
     print(player)
+    str2 = 'Carteira: R$ {}'.format(player[3])
     str = "1"
     clientsocket = ""
     for i in range(len(Ordem)):
         if player[1] == Ordem[i][0]:
             clientsocket = Ordem[i][1]
     clientsocket.send(str.encode('utf-8'))
+    clientsocket.send(str2.encode('utf-8'))
     time.sleep(10)
     
     player[7] = int(resposta)
@@ -34,6 +36,7 @@ def Bet(player):
     global valueRound
     valueRound += player[7]
     print(player)
+    return player
        
 
 #Reseta o baralho já o embaralhando
@@ -54,7 +57,8 @@ def GiveCards(cheap):
 
         del(cheap[0:2])
 
-#Da a opção de comer mais cartas
+
+
 def eat(player,cheap):
     while(True):
         #Envia a lista do player com as cartas atuais
@@ -193,7 +197,7 @@ def win():
         for i in range(len(ListPlayers)):
             ListPlayers[i][3] += valueRound/len(ListPlayers)
         valueRound = 0
-        print("Não tivemos vencedores, todos estouraram !! O valor foi redividido entre todos os jogadores !!")
+        print("\nNão tivemos vencedores, todos estouraram! \nO valor foi redividido entre todos os jogadores!\n")
         return winners
 
     
@@ -205,35 +209,33 @@ def ShowAmount(player):
 
 #Controla o decorrer da rodada
 def Round(numRound,cheap):
-    print("\n*********** BLACKJACK ***********")
-    print("\n************ ROUND ",numRound+1," ************\n")
+    print("\n\n*********** BLACKJACK ***********\n***********  ROUND ",numRound+1,"***********\n")
     
     for i in range(len(ListPlayers)):
         print("\nVez do jogador", ListPlayers[i][1])
         ShowAmount(ListPlayers[i])
-        Bet(ListPlayers[i])
+        ListPlayers[i] = Bet(ListPlayers[i])
     
     #Entrega duas cartas para os jogadores
     GiveCards(cheap)
-    print(ListPlayers)
     
     #Da a opção de comer novamente ou não
     for i in range(len(ListPlayers)):
-        print("\n*********************************\nVez do jogador", ListPlayers[i][1])
-    
+        print("\n_____ JOGADA _____")
+        print("\nVez do jogador: ", ListPlayers[i][1])
+        
         ListPlayers[i][6] = CountCards(ListPlayers[i][9])
 
-        print("\nSuas Cartas   |", ListPlayers[i][9], "TOTAL   |", ListPlayers[i][6])
+        print("\nCartas: ", ListPlayers[i][9], "\nValor Atual: ", ListPlayers[i][6])
         ShowAmount(ListPlayers[i])
-        eat(ListPlayers[i], cheap) 
+        ListPlayers[i] = eat(ListPlayers[i], cheap) 
+        
     
-    print("O Vencedor foi   |", win())
-    print(ListPlayers)
+    print("\n\n*********************************\n** O Vencedor foi: ", win(), "**\n*********************************")
 
 
 
 def NewClient(clientsocket,addr):
-    print(texto_recebido)
     while True:
         try:
             global resposta
@@ -315,7 +317,7 @@ def main(argv):
                 i += 1
            
         while(True):       
-            play = int(input("\n----> OPÇÕES DE JOGO: \n1 - Jogar\n2 - Sair\n----> "))
+            play = int(input("_____ OPÇÕES DE JOGO: _____\n\n1 - Jogar\n2 - Sair\n----> "))
                 
             if(play == 1 and clients >= 1):
                     
@@ -332,10 +334,9 @@ def main(argv):
                 if(keepPlaying == "s" or keepPlaying == "S"):
                     numGame += 1
                 else:
-                    print('\nO jogo será encerrado !!')
+                    print('\n*********************************\n************ PLACAR ************\n*********************************\n')
                     for i in range(len(ListPlayers)):
-                        print("\n", ListPlayers[i][1],"\n------\nCidade: ",ListPlayers[i][2],"\nMontante", ListPlayers[i][3], "\nVitorias: ", ListPlayers[i][4])
-                    #s.close()
+                        print("\n", ListPlayers[i][1],"\n---------------------------------\nCidade: ",ListPlayers[i][2],"\nCarteira: R$", ListPlayers[i][3], "\nVitorias: ", ListPlayers[i][4], "\n")
                     break
                 
             elif(play == 1 and clients < 1):
@@ -343,8 +344,7 @@ def main(argv):
             elif(play == 2):
                 print("Saindo do jogo")
                 for i in range(len(ListPlayers)):
-                    print("\n", ListPlayers[i][1],"\n------\nCidade: ",ListPlayers[i][2],"\nMontante", ListPlayers[i][3], "\nVitorias: ", ListPlayers[i][4])
-                #s.close()
+                    print("\n", ListPlayers[i][1],"\n---------------------------------\nCidade: ",ListPlayers[i][2],"\nCarteira: R$", ListPlayers[i][3], "\nVitorias: ", ListPlayers[i][4], "\n")
                 break
                 
             else:

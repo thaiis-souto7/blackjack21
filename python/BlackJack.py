@@ -52,7 +52,7 @@ def main(argv):
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             
-            print("\n*********** BLACKJACK ***********\n")
+            print("\n*********************************\n*********** BLACKJACK ***********\n*********************************\n")
             InfoPlayer()
 
             playerString = ",".join(str(v) for v in Player[0])
