@@ -20,17 +20,18 @@ resposta = ""
 
 #Pergunta quanto que o jogador quer apostar e faz a aposta
 def Bet(player):
-    amountPlayer = int(player[3])
+    print(player)
     str = "1"
     clientsocket = ""
     for i in range(len(Ordem)):
         if player[1] == Ordem[i][0]:
             clientsocket = Ordem[i][1]
     clientsocket.send(str.encode('utf-8'))
-    time.sleep(15)
+    time.sleep(10)
     
     print(resposta)
     player[7] = int(resposta)
+    player[3] -= player[7]
     global valueRound
     valueRound += player[7]
     print(player)
@@ -59,19 +60,27 @@ def eat(player,cheap):
     while(True):
         #Envia a lista do player com as cartas atuais
         
-        str = 'Suas Cartas são {} - {}'.format(player[9], CountCards(player[9]))
+        #str = 'Suas Cartas são {} - {}'.format(player[9], CountCards(player[9]))
         str2 = "2"
+        clientsocket = ""
         for i in range(len(Ordem)):
             if player[1] == Ordem[i][0]:
                 clientsocket = Ordem[i][1] 
-        clientsocket.send(str.encode())
-        clientsocket.send(str2.encode())
+        clientsocket.send(str.encode('utf-8'))
+        clientsocket.send(str2.encode('utf-8'))
         time.sleep(15)
 
+        print(resposta)
         if player[6] == 21:
-            print("Você já tem 21 !!")
+            print("\nVocê já tem 21!")
+            print("---------------------------------\n")
+            break
+        elif player[6] > 21:
+            print("\nVocê estourou!")
+            print("---------------------------------\n")
             break
         else:    
+            print(resposta,"BATATAAAAAAAAAAAA")
             if(resposta == "s"):
                 print("CARDSSSS", player[9])
                 cards = player[9]
@@ -79,7 +88,7 @@ def eat(player,cheap):
                 cards.append(cheap[0])
                 player[9] = cards
                 del(cheap[0:1])
-                print("Suas Cartas   |", player[9], "TOTAL   |", CountCards(player[9]))
+                print("\nCartas: ", player[9], "\nValor Atual: ", CountCards(player[9]))
                 player[6] = CountCards(player[9])
             else:
                 break
@@ -227,6 +236,7 @@ def Round(numRound,cheap):
 def NewClient(clientsocket,addr):
     while True:
         try:
+            global resposta
             numberOne = []
             data = clientsocket.recv(BUFFER_SIZE)
             if not data:
@@ -236,7 +246,8 @@ def NewClient(clientsocket,addr):
             texto_recebido = data.decode('utf-8') # converte os bytes em string
             #TransforInPlayer(texto_recebido)
             print('recebido do cliente {} na porta {}: {}'.format(addr[0], addr[1],texto_recebido))
-            global resposta
+            
+            print(texto_recebido,"FEIJAAAAAAOOOOOOOOOOOo")
             resposta = texto_recebido
             if texto_recebido == "s" or texto_recebido == "S" or texto_recebido == "sim" or texto_recebido == "SIM" or texto_recebido == "Sim":
                 resposta = "s"

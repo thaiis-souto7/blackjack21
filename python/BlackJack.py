@@ -36,37 +36,16 @@ class AddPlayer:
         
 def Bet(player):
     amountPlayer = int(player[0][3])
-    value = int(input("Qual valor deseja apostar? \n----> "))
+    value = int(input("\nQual valor deseja apostar? \n----> R$"))
+    print("---------------------------------")
     while (value < 1 or value > amountPlayer):
         print("Não é permitido apostar esse valor")
-        value = int(input("Qual valor deseja apostar? \n----> "))
-
+        value = int(input("Qual valor deseja apostar? \n----> R$"))
+    print("---------------------------------")
     player[0][3] -= value
     player[0][7] = value
     
     return value
-
-
-def treatment(player):
-    print(player)
-    player[9] = player[9][: - 1]
-    player[0] = player[0][0:2]
-                    
-    #Transforma os numeros em int
-    player[0] = int(player[0])
-    player[3] = int(player[3])
-    player[4] = int(player[4])
-    player[5] = int(player[5])
-    player[6] = int(player[6])
-    player[7] = int(player[7])
-
-    Player.clear()
-    Player.append(player)
-
-
-def eat():
-    eating = input("----> Deseja comer uma nova carta ? [s/n] \n----> ")
-    return eating
 
 
 def main(argv): 
@@ -90,7 +69,8 @@ def main(argv):
                     s.send(resposta.encode('utf-8'))
                 
                 elif texto_string == "2":
-                    resposta = eat()
+                    eating = input("\n----> Comer nova carta? [s/n] \n----> ")
+                    s.send(eating.encode('utf-8'))
                 
                 elif len(texto_string) > 100:
                     player = texto_string.split(".")
